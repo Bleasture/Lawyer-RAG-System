@@ -14,6 +14,7 @@ models/
 chroma_storage/
 local_storage/
 my_local_cache/
+cache/
 *.json  # Prevents accidentally committing the BM25 index_store.json
 
 # 3. Raw Data
