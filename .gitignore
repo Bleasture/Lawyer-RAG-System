@@ -1,0 +1,50 @@
+# ==========================================
+# Lawyer-RAG Project .gitignore
+# ==========================================
+
+# 1. Massive AI Models
+# (GitHub blocks files over 100MB. Never commit models!)
+models/
+*.gguf
+*.bin
+*.safetensors
+
+# 2. Vector Databases and Keyword Storage
+# (These are generated locally and take up huge amounts of space)
+chroma_storage/
+local_storage/
+my_local_cache/
+*.json  # Prevents accidentally committing the BM25 index_store.json
+
+# 3. Raw Data
+# (Keep your legal PDFs and OCR images private and local)
+data/
+*.pdf
+*.PDF
+*.jpg
+*.jpeg
+*.png
+
+# 4. Environment Variables / Secrets
+# (Never commit API keys or local file paths)
+.env
+.env.*
+secrets.json
+
+# 5. Python Caches and Virtual Environments
+# (Prevents cluttering the repo with your specific machine's setup)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+.venv/
+Scripts/
+
+# 6. IDE and OS Files
+# (Settings specific to VSCode, PyCharm, Mac, or Windows)
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
