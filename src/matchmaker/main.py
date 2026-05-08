@@ -22,7 +22,7 @@ def process_new_client(complaint_text, budget):
 
 if __name__ == "__main__":
     # Optional: Run this once if you updated lawyers.json
-    # update_lawyer_database() 
+    update_lawyer_database() 
     
     setup_translator()
     

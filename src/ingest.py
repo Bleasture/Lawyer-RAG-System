@@ -129,7 +129,11 @@ def ingest_documents():
         return
 
     config.logger.info("[4/5] Document-Level Extraction and Chunking...")
-    node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=50, paragraph_separator="\n\n")
+    node_parser = SentenceSplitter(
+        chunk_size=256,      # Cuts the context size in half, forcing surgical retrieval
+        chunk_overlap=25,    # Keeps enough context so sentences aren't awkwardly chopped
+        paragraph_separator="\n\n"
+    )
     all_nodes = []
     
     file_metadata_cache = {}

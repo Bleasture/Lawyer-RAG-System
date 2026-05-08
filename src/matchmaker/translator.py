@@ -1,28 +1,50 @@
-from llama_index.llms.llama_cpp import LlamaCPP
 from llama_index.core import Settings
-from .config import TRANSLATOR_MODEL
+from llama_index.llms.openai_like import OpenAILike
+from .config import GEMINI_API_KEY
 
 def setup_translator():
-    Settings.llm = LlamaCPP(
-        model_path=TRANSLATOR_MODEL,
-        temperature=0.1, 
-        max_new_tokens=100, 
-        context_window=4096,
-        model_kwargs={"n_gpu_layers": 25},
-        verbose=False
+    """Initializes the Gemma 4 31B model via the cloud API."""
+    if not GEMINI_API_KEY:
+        print("⚠️ ERROR: GEMINI_API_KEY not found in .env file!")
+
+    Settings.llm = OpenAILike(
+        model="models/gemma-4-31b-it", 
+        api_key=GEMINI_API_KEY,
+        api_base="https://generativelanguage.googleapis.com/v1beta/openai/", 
+        temperature=0.0,          # Keeps the extraction strict and deterministic
+        max_tokens=50,            # Hard limit so it doesn't ramble
+        is_chat_model=True,       
+        context_window=32768,     
     )
 
 def translate_client_complaint(client_text):
-    prompt = f"""You are an expert legal intake paralegal. 
-Read the client's informal complaint and extract ONLY the formal legal areas of law, case types, and key legal concepts it represents.
-Output ONLY a comma-separated list of legal terms. No conversational text.
+    prompt = f"""
+You are an expert legal intake paralegal.
 
-Client Complaint: "{client_text}"
+Extract ONLY:
+- areas of law
+- legal claims
+- legal concepts
 
-Formal Legal Terms:"""
+RULES:
+- Output ONLY comma-separated legal terms.
+- DO NOT explain reasoning.
+- DO NOT reveal thoughts.
+- DO NOT include analysis.
+- NO markdown.
+- NO extra text.
+
+Client Complaint:
+\"{client_text}\"
+
+Legal Terms:
+"""
 
     try:
-        return Settings.llm.complete(prompt).text.strip()
+        response = Settings.llm.complete(prompt).text.strip()
+        if "</thought>" in response:
+            response = response.split("</thought>")[-1].strip()
+        return response
     except Exception as e:
         print(f"⚠️ Translation Error: {e}")
         return client_text # Fallback
