@@ -1,36 +1,36 @@
 # Installation
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/Bleasture/Lawyer-RAG-System.git
+git clone -b master https://github.com/Bleasture/Lawyer-RAG-System.git
 cd Lawyer-RAG-System
 ```
 ### 2. Create Virtual Environment
-```bash
+```py
 python -m venv LawyerSystem
 LawyerSystem\\Scripts\\activate
 ```
 ### 3. Install Dependencies
-```bash
+```pip
 pip install -r requirements.txt
 ```
 ### Environment Variables
-Create a .env file in the project root:
+Create a `.env` file in the project root:
 ```bash
 GEMINI_API_KEY=your_google_ai_studio_api_key
 ```
 ## Running the Legal RAG Summarizer
 
 ### Step 1 — Add Legal PDFs
-Place legal judgments inside /data
+Place legal judgments inside `/data`
 
 ### Step 2 — Ingest Documents
 Run:
-```bash
+```py
 python -m src.ingest
 ```
 ### Step 3 — Run Legal Query Engine
 Run:
-```bash
+```py
 python -m src.query
 ```
 Example queries:
@@ -44,7 +44,7 @@ Why was the FIR quashed?
 ## Running the Lawyer Matchmaker
 
 ### Step 1 — Add Lawyers
-Edit: data/lawyers.json
+Edit: `data/lawyers.json`
 Example:
 ```json
 [
@@ -59,12 +59,12 @@ Example:
 ]
 ```
 ### Step 2 — Build Lawyer Vector Database
-Run once whenever lawyers.json changes:
-```bash
+Run once whenever `lawyers.json` changes:
+```py
 python -m src.matchmaker.update_db
 ```
 ### Step 3 — Run Matchmaker
-```bash
+```py 
 python -m src.matchmaker.main
 ```
 Example Complaint:
